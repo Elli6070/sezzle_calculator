@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<title> Calculator </title>
+		<style>
+			* { margin: 0; padding: 0; box-sizing: border-box; }
+		  body { font: 13px Helvetica, Arial; }
+		  form { background: #A7A7A7; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+		  form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
+		  form button { width: 9%; border: none; padding: 10px; }
+		  #history { list-style-type: none; margin: 0; padding: 0; }
+		  #history li { padding: 5px 10px; }
+		  #history li:nth-child(odd) { background: #eee; }
+		</style>
+	</head>
+	
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+	var historyData = "";
+	var historyList = [];
+	int index = 0;
+	$(document).ready(function() { 
+		$.getJSON("history.json", function(data) {
+			$each(data.history, function(key, value) { 
+				historyData += "<li>" + value.equation + "</li>";
+				historyList[index] = value.equation;
+				index++;
+				$("#history").append(historyData);
+			});
+		});
+	});
+
+	$(function () {
+		var socket = io();
+		$("form").submit(function(f) {
+			f.preventDefault();
+			socket.emit("calculation", $("#m").val());
+			$("#m").val("");
+			return false;
+		});
+			socket.on("calculation", function(equ){
+			var equation = equ  + "=" + eval(equ);
+			
+			if(index < 10)
+			{
+				$("#history").append($("<li>").text(equation));
+				historyList[index] = equation;
+				index++;
+			}
+			
+			else
+			{
+				historyData = "";
+				for(int i = 0; i < 9; i++)
+				{
+					historyList[i] = historyList[i+1];
+					historyData += "<li>" + historyList[i] + "</li>"
+					if(i == 8)
+					{
+						historyList[9] = equation;
+						historyData += "<li>" + historyList[9] + "</li>"
+					}
+				}
+				$("#history").html(historyData);
+			}
+			
+		});
+	});
+	</script>
+	
+	<body>
+		<ul id="history"></ul>
+		<form action="">
+		  <input id="m" autocomplete="off" /><button>Calculate</button>
+		</form>
+	</body>
+	
+</html>
