@@ -16,7 +16,7 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
-	var historyData = "";
+	/*var historyData = "";
 	var historyList = [];
 	int index = 0;
 	$(document).ready(function() { 
@@ -28,7 +28,7 @@
 				$("#history").append(historyData);
 			});
 		});
-	});
+	});*/
 
 	$(function () {
 		var socket = io();
@@ -39,30 +39,10 @@
 			return false;
 		});
 			socket.on("calculation", function(equ){
-			var equation = equ  + "=" + eval(equ);
-			
-			if(index < 10)
-			{
-				$("#history").append($("<li>").text(equation));
-				historyList[index] = equation;
-				index++;
-			}
-			
-			else
-			{
-				historyData = "";
-				for(int i = 0; i < 9; i++)
-				{
-					historyList[i] = historyList[i+1];
-					historyData += "<li>" + historyList[i] + "</li>"
-					if(i == 8)
-					{
-						historyList[9] = equation;
-						historyData += "<li>" + historyList[9] + "</li>"
-					}
-				}
-				$("#history").html(historyData);
-			}
+			//var equation = ;
+			$("#history").append($("<li>").text(equ  + "=" + eval(equ)));
+			//historyList[index] = equation;
+			//index++;
 			
 		});
 	});
