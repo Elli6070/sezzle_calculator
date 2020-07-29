@@ -1,0 +1,5 @@
+Drew Elliott
+
+I wrote the project using Nodejs since that's what I studied in web dev. This is what I was able to do in ~5 hrs, 
+but my html is pretty rusty and I couldn't get the syntax for reading/writing JSON to save data between sessions right.
+I'm also not very familiar with hosting websites on heroku, and for some reason it breaks the arithmetic even though it works fine locally.
